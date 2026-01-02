@@ -117,7 +117,75 @@ When all phases are complete:
 3. Reset plan.md to "No active plan"
 ```
 
-### 5. Clean Up Sessions Directory
+### 5. Update Cross-Reference Index
+
+Maintain a searchable index at `.ctx/history/index.md`:
+
+```markdown
+# History Index
+
+Last updated: {date}
+
+## Plans
+
+| Plan | Date | Sessions | Status |
+|------|------|----------|--------|
+| {plan-name} | {date} | {n} | completed |
+| {plan-name} | {date} | {n} | completed |
+
+## Decisions Log
+
+| Date | Plan | Decision | Reasoning | Session |
+|------|------|----------|-----------|---------|
+| {date} | {plan} | {decision} | {why} | {link} |
+
+## Lessons Learned
+
+| Date | Plan | Lesson | Context |
+|------|------|--------|---------|
+| {date} | {plan} | {lesson} | {link to session} |
+
+## Patterns & Solutions
+
+| Problem | Solution | Used In |
+|---------|----------|---------|
+| {problem description} | {how it was solved} | {plan/session} |
+
+## Tags
+
+- `#auth` - {plan1}, {plan2}
+- `#api` - {plan1}
+- `#refactor` - {plan3}
+```
+
+### Index Update Process
+
+```
+1. Read existing .ctx/history/index.md (or create if missing)
+
+2. FOR each session report being archived:
+   - Extract "Decisions Made" → append to Decisions Log
+   - Extract "Discovered" → append to Lessons Learned
+   - Identify reusable patterns → add to Patterns & Solutions
+
+3. Update Plans table with new entry
+
+4. Auto-generate tags from:
+   - Plan name keywords
+   - Session types (feature, bugfix, etc.)
+   - Technologies mentioned
+
+5. Write updated index.md
+```
+
+### Searching History
+
+During `plan` mode, search the index:
+- Check Decisions Log for similar past decisions
+- Check Patterns & Solutions for reusable approaches
+- Check Lessons Learned to avoid past mistakes
+
+### 6. Clean Up Sessions Directory
 
 After archiving:
 
@@ -141,6 +209,7 @@ After archiving:
 ║                                                              ║
 ║  Generated:                                                  ║
 ║    • _summary.md with key outcomes                           ║
+║    • Updated history/index.md                                ║
 ║                                                              ║
 ║  Cleaned:                                                    ║
 ║    • Removed {phase}/ from sessions/                         ║

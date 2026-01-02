@@ -97,7 +97,61 @@ WARNINGS:
   - status_mismatch: "Report status doesn't match session state"
 ```
 
-### 6. Memory Consistency
+### 6. Brief-Report Synchronization
+
+```
+FOR each session with both brief.md and report.md:
+
+  # Check success criteria alignment
+  Extract "Success Criteria" from brief.md
+  Extract "What Was Done" from report.md
+
+  IF report.status = completed THEN
+    CHECK: Each success criterion has corresponding completion evidence
+    CHECK: Report doesn't claim work outside original scope without noting it
+
+  # Check scope drift
+  Extract "Out of Scope" from brief.md
+  CHECK: Report "What Was Done" doesn't include out-of-scope items
+
+  # Check objective match
+  Extract "Objective" from brief.md
+  Extract "Objective" from report.md
+  CHECK: Objectives match (allowing for minor wording differences)
+
+WARNINGS:
+  - criteria_mismatch: "Brief has {n} success criteria, report addresses {m}"
+  - scope_drift: "Report includes work marked out-of-scope in brief"
+  - objective_changed: "Report objective differs from brief objective"
+
+SUGGESTIONS:
+  - If scope legitimately changed during work, update brief before archiving
+  - If criteria were unachievable, document why in report
+```
+
+### Brief-Report Sync Auto-Fix
+
+When `validate --fix` encounters sync issues:
+
+```
+FOR each session with brief-report mismatch:
+
+  PROMPT: "Session '{session}' has scope drift. Options:"
+    1. Update brief.md to match actual work done
+    2. Add note to report.md explaining deviation
+    3. Skip (fix manually later)
+
+  IF option 1:
+    - Copy "What Was Done" items to brief's scope
+    - Add "## Scope Changes" section to brief
+    - Note: "Updated during validation on {date}"
+
+  IF option 2:
+    - Add "## Scope Notes" to report
+    - Include: "Deviated from original brief due to: {reason}"
+```
+
+### 7. Memory Consistency
 
 ```
 CHECK: .ctx/memory/project.md exists
@@ -111,7 +165,7 @@ WARNINGS:
   - incomplete_module: "Module '{name}' missing required sections"
 ```
 
-### 7. Orphan Detection
+### 8. Orphan Detection
 
 ```
 FOR each directory in .ctx/sessions/:
@@ -125,7 +179,7 @@ WARNINGS:
   - orphan_session: "Session '{session}' not in plan.md"
 ```
 
-### 8. Progress Tracking Accuracy
+### 9. Progress Tracking Accuracy
 
 ```
 Count actual completed sessions from reports
@@ -158,6 +212,7 @@ PASSED:
   ✓ Plan structure
   ✓ Dependencies valid
   ✓ Reports complete
+  ✓ Brief-report sync
   ✓ Memory files present
   ✓ No orphans
   ✓ Progress tracking accurate
@@ -177,6 +232,8 @@ For certain issues, offer to fix automatically:
 | missing_phase_dir | Create directory |
 | missing_overview | Create template _overview.md |
 | orphan_session (completed) | Move to history |
+| scope_drift | Prompt to update brief or add note to report |
+| criteria_mismatch | Prompt to reconcile brief and report |
 
 ```
 Auto-fixable issues found. Run `validate --fix` to apply:

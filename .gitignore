@@ -15,6 +15,7 @@ Thumbs.db
 !.ctx/sessions/.gitkeep
 .ctx/history/*
 !.ctx/history/.gitkeep
+!.ctx/history/index.md
 
 # Keep modules directory but ignore contents
 # (they contain project-specific context)

@@ -19,7 +19,8 @@ You are in planning mode. Your job is to analyze the project and create a struct
    - Completable in one conversation
    - Clear on inputs and success criteria
 5. **Identify dependencies** - Order sessions appropriately
-6. **Write the plan** - Output to `.ctx/plan.md`
+6. **Validate dependencies** - Check for circular dependencies (see below)
+7. **Write the plan** - Output to `.ctx/plan.md`
 
 ## Session Sizing
 
@@ -31,6 +32,68 @@ A good session:
 
 Too big: "Implement authentication" → split into types, middleware, routes, tests
 Too small: "Add one import" → combine with related changes
+
+## Dependency Validation
+
+Before finalizing the plan, validate that dependencies form a valid DAG (Directed Acyclic Graph).
+
+### Topological Sort Algorithm
+
+```
+1. Build adjacency list from all session dependencies
+2. Calculate in-degree for each session (number of dependencies)
+3. Start with sessions that have in-degree = 0 (no dependencies)
+4. Process queue:
+   - Remove session from queue
+   - Add to sorted order
+   - Reduce in-degree of dependent sessions by 1
+   - If any dependent session reaches in-degree 0, add to queue
+5. If sorted order contains all sessions → valid
+   If not → circular dependency exists
+```
+
+### Detecting Cycles
+
+If circular dependency detected:
+
+```
+ERROR: Circular dependency detected
+
+Cycle: session-A → session-B → session-C → session-A
+
+Resolution options:
+1. Remove one dependency to break the cycle
+2. Merge sessions that are tightly coupled
+3. Extract shared work into a new session that both depend on
+```
+
+### Valid Dependency Rules
+
+- Sessions can only depend on sessions in the same or earlier phases
+- Cross-phase dependencies must reference: `{phase}/{session}`
+- Self-dependencies are invalid
+- A session cannot depend on a session that depends on it
+
+### Example Validation
+
+```
+Sessions: A, B, C, D
+Dependencies: B→A, C→A, D→B, D→C
+
+Adjacency: A→[B,C], B→[D], C→[D]
+In-degree: A=0, B=1, C=1, D=2
+
+Process:
+- Queue: [A] (in-degree 0)
+- Process A → sorted=[A], reduce B,C → in-degree: B=0, C=0
+- Queue: [B,C]
+- Process B → sorted=[A,B], reduce D → in-degree: D=1
+- Process C → sorted=[A,B,C], reduce D → in-degree: D=0
+- Queue: [D]
+- Process D → sorted=[A,B,C,D]
+
+Result: Valid! Execution order: A → B → C → D
+```
 
 ## Output
 
