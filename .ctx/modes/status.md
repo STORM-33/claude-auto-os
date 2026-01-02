@@ -2,6 +2,15 @@
 
 You are running the `status` command. Your job is to display the current system state and progress.
 
+## Command Variants
+
+| Command | Output |
+|---------|--------|
+| `status` | Full status display |
+| `status --compact` | One-line summary |
+| `status --critical` | Only critical/high severity items |
+| `status --detail` | Include per-session breakdown |
+
 ## Inputs
 
 1. `.ctx/state.md` - Current state and progress tracking
@@ -105,11 +114,56 @@ Based on state, suggest next action:
 
 ## Compact Format
 
-For quick checks, use compact format:
+For quick checks, use `status --compact`:
 
 ```
 Status: {mode} | Sessions: {done}/{total} | Streak: {n} | Next: {suggestion}
 ```
+
+## Critical-Only Format
+
+For `status --critical`, show only items requiring immediate attention:
+
+```
+╔══════════════════════════════════════════════════════════════╗
+║                    CRITICAL ITEMS                            ║
+╠══════════════════════════════════════════════════════════════╣
+║  BLOCKERS (critical/high severity only)                      ║
+╠══════════════════════════════════════════════════════════════╣
+  🔴 CRITICAL: {description}
+     Session: {session-name}
+     Since: {date}
+     Action: {required action}
+
+  🟠 HIGH: {description}
+     Session: {session-name}
+     Impact: Blocks {n} sessions
+     Action: {required action}
+
+╠══════════════════════════════════════════════════════════════╣
+║  STALE WARNINGS                                              ║
+╠══════════════════════════════════════════════════════════════╣
+  ⚠ Memory stale: Last reflect {n} sessions ago
+  ⚠ Long wait: {session} waiting for {n} days
+
+╠══════════════════════════════════════════════════════════════╣
+║  No critical items: ✓ System healthy                         ║
+╚══════════════════════════════════════════════════════════════╝
+```
+
+### Critical Item Detection
+
+Flag as critical/high if:
+- Blocker severity is `critical` or `high`
+- Session blocked for > 3 days
+- Same session blocked 2+ times
+- State corruption detected
+- Progress tracking mismatch
+
+Skip in critical view:
+- Low/medium severity blockers
+- Normal pending sessions
+- Informational warnings
 
 ## Detailed Session List
 

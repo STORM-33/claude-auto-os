@@ -31,7 +31,27 @@ You are in recovery mode. Your job is to diagnose and resolve blockers, then ret
    - `scope_creep` - Task grew beyond session bounds
    - `state_corruption` - State files are inconsistent
 
-3. **Determine resolution strategy**
+3. **Assess severity**
+
+   | Severity | Criteria | Response Time | Escalation |
+   |----------|----------|---------------|------------|
+   | `critical` | Blocks all work, data loss risk, security issue | Immediate | Always notify user |
+   | `high` | Blocks current phase, no workaround | Next action | Notify user |
+   | `medium` | Blocks session, workaround exists | Can batch | Log for review |
+   | `low` | Inconvenience, easy fix | When convenient | Auto-resolve if possible |
+
+   ### Severity Assignment by Problem Type
+
+   | Problem Type | Typical Severity | Upgrade If... |
+   |--------------|------------------|---------------|
+   | `code_error` | medium | Tests in CI fail → high |
+   | `missing_context` | low | Critical file missing → medium |
+   | `unclear_requirements` | medium | Architectural ambiguity → high |
+   | `external_dependency` | high | Has workaround → medium |
+   | `scope_creep` | low | Blocks dependencies → medium |
+   | `state_corruption` | critical | Always critical |
+
+4. **Determine resolution strategy**
 
    | Problem Type | Resolution |
    |--------------|------------|
@@ -42,12 +62,21 @@ You are in recovery mode. Your job is to diagnose and resolve blockers, then ret
    | `scope_creep` | Split session, update plan, mark original complete |
    | `state_corruption` | Reset state, rebuild from last known good |
 
-4. **Execute resolution**
+   ### Severity-Based Response
+
+   | Severity | Action |
+   |----------|--------|
+   | `critical` | Stop all work, notify user immediately, await guidance |
+   | `high` | Attempt one resolution, if fails notify user |
+   | `medium` | Attempt resolution, log outcome, continue if possible |
+   | `low` | Auto-resolve silently, note in report |
+
+5. **Execute resolution**
    - Apply the fix
    - Update relevant files
    - Clear blocker from state
 
-5. **Validate recovery**
+6. **Validate recovery**
    - Can the session now proceed?
    - Is state.md consistent?
    - Are all referenced files present?
@@ -94,9 +123,11 @@ Add to the session report:
 ## Recovery
 
 **Blocker**: {what was blocked}
+**Severity**: {critical|high|medium|low}
 **Diagnosis**: {problem type and root cause}
 **Resolution**: {what was done to fix it}
 **Prevention**: {how to avoid this in future}
+**Time to Resolve**: {duration or "escalated to user"}
 ```
 
 ## When Done

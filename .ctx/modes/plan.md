@@ -8,19 +8,81 @@ You are in planning mode. Your job is to analyze the project and create a struct
 2. `.ctx/memory/project.md` - current project understanding
 3. `.ctx/scratchpad.md` - open questions and notes
 4. Previous plan (if revising): `.ctx/plan.md`
+5. `.ctx/history/index.md` - past decisions, patterns, and lessons learned
 
 ## Process
 
 1. **Understand the goal** - Clarify with user if ambiguous
-2. **Assess current state** - Read project.md, explore codebase if needed
-3. **Break down work** - Identify logical phases and sessions
-4. **Define sessions** - Each session should be:
+2. **Consult history** - Check `.ctx/history/index.md` for relevant past work (see below)
+3. **Assess current state** - Read project.md, explore codebase if needed
+4. **Break down work** - Identify logical phases and sessions
+5. **Define sessions** - Each session should be:
    - Focused on one coherent task
    - Completable in one conversation
    - Clear on inputs and success criteria
-5. **Identify dependencies** - Order sessions appropriately
-6. **Validate dependencies** - Check for circular dependencies (see below)
-7. **Write the plan** - Output to `.ctx/plan.md`
+6. **Assign complexity** - Mark each session as `low`, `medium`, or `high`
+7. **Identify dependencies** - Order sessions appropriately
+8. **Validate dependencies** - Check for circular dependencies (see below)
+9. **Write the plan** - Output to `.ctx/plan.md`
+
+## Consulting History
+
+Before creating a new plan, search the history index for relevant past work:
+
+### What to Look For
+
+```
+1. Read .ctx/history/index.md
+
+2. Check "Patterns & Solutions" for:
+   - Similar problems you've solved before
+   - Reusable approaches that worked
+
+3. Check "Decisions Log" for:
+   - Past architectural decisions that apply
+   - Reasons behind previous choices
+
+4. Check "Lessons Learned" for:
+   - Mistakes to avoid
+   - Unexpected complications encountered
+```
+
+### Applying History
+
+When planning, note relevant history:
+
+```markdown
+## Notes
+- Similar to {past-plan}: reusing {pattern} approach
+- Avoiding {past-mistake} per lessons learned on {date}
+- Decision to use {X} consistent with {past-decision}
+```
+
+If no relevant history exists, note that too - helps build the knowledge base.
+
+## Complexity Assignment
+
+Assign complexity to each session during planning:
+
+| Complexity | Criteria | Examples |
+|------------|----------|----------|
+| `low` | Single file, obvious change, no decisions | Fix typo, add import, update config value |
+| `medium` | 2-5 files, some decisions, clear path | Add endpoint, implement helper, write tests |
+| `high` | Many files, architectural decisions, unknowns | New feature, refactor system, debug complex issue |
+
+### Complexity Signals
+
+**Upgrade to higher complexity if:**
+- Multiple valid approaches exist (decision needed)
+- Dependencies on external systems
+- Performance or security implications
+- Cross-cutting concerns (affects many modules)
+- Unfamiliar codebase area
+
+**Downgrade to lower complexity if:**
+- Following established pattern
+- Similar work done recently (check history)
+- Clear success criteria with no ambiguity
 
 ## Session Sizing
 

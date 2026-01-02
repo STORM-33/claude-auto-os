@@ -17,6 +17,9 @@ Self-orchestrating AI workflow system built on Claude Code.
 | `plan` | Create or revise work plan | plan.md |
 | `next` | Start next pending session | next.md |
 | `status` | Show current state and progress | status.md |
+| `status --compact` | One-line status summary | status.md |
+| `status --critical` | Show only critical/high items | status.md |
+| `status --detail` | Include per-session breakdown | status.md |
 | `resume` | Continue active session | execute.md |
 | `reflect` | Update memory from recent work | reflect.md |
 | `recover` | Diagnose and fix blockers | recover.md |
@@ -130,6 +133,22 @@ Use templates from `.ctx/templates/` for consistent briefs:
 | refactor | Code improvements | Before/after state, rollback |
 | research | Investigation | Questions to answer, time box |
 
+## Session Complexity
+
+Each session is assigned a complexity level that affects documentation requirements:
+
+| Complexity | Documentation | Verification | Reflect Trigger |
+|------------|---------------|--------------|-----------------|
+| `low` | Fast Track (minimal report) | Basic check | Every 5 sessions |
+| `medium` | Standard report | Full criteria check | Every 3 sessions |
+| `high` | Detailed report + decisions | Full + edge cases | After each session |
+
+### Complexity Guidelines
+
+- **Low**: Single file, obvious change, no decisions (typos, config updates)
+- **Medium**: 2-5 files, some decisions, clear path (add endpoint, write tests)
+- **High**: Many files, architectural decisions, unknowns (new feature, complex debug)
+
 ## Progress Tracking
 
 state.md tracks:
@@ -155,8 +174,18 @@ state.md tracks:
 When things go wrong:
 1. Run `recover` to enter recovery mode
 2. System diagnoses: `code_error`, `missing_context`, `unclear_requirements`, `external_dependency`, `scope_creep`, `state_corruption`
-3. Applies resolution strategy
-4. Returns to normal workflow
+3. Assesses severity level
+4. Applies resolution strategy based on severity
+5. Returns to normal workflow
+
+### Blocker Severity Levels
+
+| Severity | Response | Example |
+|----------|----------|---------|
+| `critical` | Stop all work, notify user immediately | State corruption, data loss risk |
+| `high` | Attempt one fix, escalate if fails | Blocks phase, no workaround |
+| `medium` | Auto-resolve if possible, log | Blocks session, workaround exists |
+| `low` | Fix silently, note in report | Minor inconvenience |
 
 ## Validation
 
@@ -175,3 +204,26 @@ After completing phases/plans:
 2. Completed work moves to `.ctx/history/`
 3. Summaries generated for future reference
 4. Active workspace stays clean
+
+## History & Pattern Reuse
+
+The system learns from past work via `.ctx/history/index.md`:
+
+### During Planning
+- Check "Patterns & Solutions" for reusable approaches
+- Check "Decisions Log" for consistent architectural choices
+- Check "Lessons Learned" to avoid past mistakes
+
+### During Archiving
+- Decisions, discoveries, and patterns are extracted from reports
+- Index is updated automatically for future reference
+
+## Auto-Report Generation
+
+Reports are auto-generated from execution trace to reduce overhead:
+
+1. **During execution**: System tracks files modified, tests run, decisions made
+2. **After completion**: Skeleton report is generated automatically
+3. **Review step**: Human reviews and adds context (minimal for low complexity)
+
+This reduces "management tax" while maintaining documentation quality.

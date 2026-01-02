@@ -2,6 +2,7 @@
 
 Type: refactor
 Phase: {phase-name}
+Complexity: {low|medium|high}
 Created: {date}
 
 ## Objective
