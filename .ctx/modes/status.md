@@ -81,35 +81,21 @@ Based on state, suggest next action:
 ## Output Format
 
 ```
-╔══════════════════════════════════════════════════════════════╗
-║                      CLAUDE AUTO OS                          ║
-╠══════════════════════════════════════════════════════════════╣
-║  Mode: {idle|executing|planning|reflecting|recovering|waiting}
-║  Active: {session-name} ({phase-name}) | none
-║  Last Action: {description}
-╠══════════════════════════════════════════════════════════════╣
-║  PROGRESS                                                    ║
-╠══════════════════════════════════════════════════════════════╣
-║  Sessions: {completed}/{total} ({percent}%)
-║  Streak: {n} consecutive completions
-║  Blocked: {n}
-║  Last Reflect: {date|never}
-╠══════════════════════════════════════════════════════════════╣
-║  PLAN: {plan-name}                                           ║
-╠══════════════════════════════════════════════════════════════╣
-║  Phase 1: {name}
-║    [████████░░] 80% - {completed}/{total} sessions
-║
-║  Phase 2: {name}
-║    [░░░░░░░░░░] 0% - not started
-║
-╠══════════════════════════════════════════════════════════════╣
-║  SCRATCHPAD: {n} items pending                               ║
-╠══════════════════════════════════════════════════════════════╣
-║  Blockers: {none | list}                                     ║
-╠══════════════════════════════════════════════════════════════╣
-║  Suggested: {action}                                         ║
-╚══════════════════════════════════════════════════════════════╝
+## Status
+
+Mode: {mode} | Active: {session} | Last: {action}
+
+### Progress
+Sessions: {completed}/{total} ({percent}%)
+Streak: {n} | Blocked: {n} | Last Reflect: {date}
+
+### Plan: {plan-name}
+- Phase 1: {name} - {n}% ({completed}/{total})
+- Phase 2: {name} - not started
+
+Scratchpad: {n} items
+Blockers: {none | list}
+Suggested: {action}
 ```
 
 ## Compact Format
@@ -125,30 +111,17 @@ Status: {mode} | Sessions: {done}/{total} | Streak: {n} | Next: {suggestion}
 For `status --critical`, show only items requiring immediate attention:
 
 ```
-╔══════════════════════════════════════════════════════════════╗
-║                    CRITICAL ITEMS                            ║
-╠══════════════════════════════════════════════════════════════╣
-║  BLOCKERS (critical/high severity only)                      ║
-╠══════════════════════════════════════════════════════════════╣
-  🔴 CRITICAL: {description}
-     Session: {session-name}
-     Since: {date}
-     Action: {required action}
+## Critical Items
 
-  🟠 HIGH: {description}
-     Session: {session-name}
-     Impact: Blocks {n} sessions
-     Action: {required action}
+### Blockers
+- CRITICAL: {description} | {session} | since {date} | Action: {action}
+- HIGH: {description} | {session} | blocks {n} | Action: {action}
 
-╠══════════════════════════════════════════════════════════════╣
-║  STALE WARNINGS                                              ║
-╠══════════════════════════════════════════════════════════════╣
-  ⚠ Memory stale: Last reflect {n} sessions ago
-  ⚠ Long wait: {session} waiting for {n} days
+### Warnings
+- Memory stale: {n} sessions since reflect
+- Long wait: {session} waiting {n} days
 
-╠══════════════════════════════════════════════════════════════╣
-║  No critical items: ✓ System healthy                         ║
-╚══════════════════════════════════════════════════════════════╝
+(or: "No critical items - system healthy")
 ```
 
 ### Critical Item Detection
@@ -167,35 +140,28 @@ Skip in critical view:
 
 ## Detailed Session List
 
-If user asks for details, show per-session status:
+For `status --detail`, show per-session status:
 
 ```
 Phase 1: {name}
-  ✓ session-1         completed    2024-01-15
-  ✓ session-2         completed    2024-01-15
-  ◐ session-3         partial      (in progress)
-  ○ session-4         pending      blocked by session-3
-  ✗ session-5         blocked      missing API key
+  [done] session-1     2024-01-15
+  [done] session-2     2024-01-15
+  [part] session-3     in progress
+  [pend] session-4     blocked by session-3
+  [block] session-5    missing API key
 
 Phase 2: {name}
-  ○ session-6         pending
-  ○ session-7         pending
+  [pend] session-6
+  [pend] session-7
 ```
-
-Legend:
-- ✓ completed
-- ◐ partial
-- ○ pending
-- ✗ blocked
-- ⏳ waiting (external)
 
 ## Health Indicators
 
 Add warnings when:
-- Streak = 0 and blocked > 0: "⚠ Recent blockers - consider `recover`"
-- Last reflect > 5 sessions ago: "⚠ Memory may be stale - consider `reflect`"
-- Scratchpad > 10 items: "⚠ Scratchpad overflow - run `reflect`"
-- Same session blocked 2+ times: "⚠ Recurring blocker on {session}"
+- Streak = 0 and blocked > 0: "WARN: Recent blockers - consider `recover`"
+- Last reflect > 5 sessions ago: "WARN: Memory may be stale - consider `reflect`"
+- Scratchpad > 10 items: "WARN: Scratchpad overflow - run `reflect`"
+- Same session blocked 2+ times: "WARN: Recurring blocker on {session}"
 
 ## No State Changes
 

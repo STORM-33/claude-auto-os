@@ -200,22 +200,20 @@ After archiving:
 ## Output Format
 
 ```
-╔══════════════════════════════════════════════════════════════╗
-║                     ARCHIVE COMPLETE                         ║
-╠══════════════════════════════════════════════════════════════╣
-║  Archived:                                                   ║
-║    • Phase: {name} → history/{archive_name}/                 ║
-║    • {n} sessions preserved                                  ║
-║                                                              ║
-║  Generated:                                                  ║
-║    • _summary.md with key outcomes                           ║
-║    • Updated history/index.md                                ║
-║                                                              ║
-║  Cleaned:                                                    ║
-║    • Removed {phase}/ from sessions/                         ║
-╠══════════════════════════════════════════════════════════════╣
-║  Suggested: `next` to continue or `plan` for new work        ║
-╚══════════════════════════════════════════════════════════════╝
+## Archive Complete
+
+Archived:
+- Phase: {name} -> history/{archive_name}/
+- {n} sessions preserved
+
+Generated:
+- _summary.md with key outcomes
+- Updated history/index.md
+
+Cleaned:
+- Removed {phase}/ from sessions/
+
+Suggested: `next` to continue or `plan` for new work
 ```
 
 ## Archive Structure
@@ -224,36 +222,30 @@ Over time, history/ builds up:
 
 ```
 .ctx/history/
-├── 2024-01-15_auth-system/
-│   ├── plan.md
-│   ├── _final.md
-│   ├── phase-1-setup/
-│   │   ├── _summary.md
-│   │   ├── _overview.md
-│   │   └── sessions...
-│   └── phase-2-implementation/
-│       └── ...
-├── 2024-02-01_api-refactor/
-│   └── ...
-└── 2024-03-10_testing/
-    └── ...
+  {date}_{plan-name}/
+    plan.md
+    _final.md
+    {phase}/
+      _summary.md
+      _overview.md
+      {session}/brief.md, report.md
 ```
 
 ## Partial Archive
 
 If only some phases are complete:
 
-```
 1. Archive only complete phases
 2. Keep plan.md active
 3. Keep incomplete phases in sessions/
 4. Update plan.md to mark archived phases:
 
-   ### Phase 1: {name} ✓ ARCHIVED
-   Archived to: history/{path}
+```
+### Phase 1: {name} [ARCHIVED]
+Archived to: history/{path}
 
-   ### Phase 2: {name}
-   {still active}
+### Phase 2: {name}
+{still active}
 ```
 
 ## Reference Archived Work

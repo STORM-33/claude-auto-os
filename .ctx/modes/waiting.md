@@ -150,20 +150,18 @@ Suggest action based on wait duration:
 When checking in on a wait:
 
 ```
-╔══════════════════════════════════════════════════════════════╗
-║                     WAITING STATUS                           ║
-╠══════════════════════════════════════════════════════════════╣
-║  Waiting for: {description}                                  ║
-║  Since: {date} ({n} days)                                    ║
-║  Session: {name}                                             ║
-║  Impact: Blocks {n} dependent sessions                       ║
-╠══════════════════════════════════════════════════════════════╣
-║  Options:                                                    ║
-║    1. resolved  - Dependency is now available                ║
-║    2. waiting   - Still waiting, show alternatives           ║
-║    3. workaround - Proceed without it                        ║
-║    4. abandon   - Give up on this path                       ║
-╚══════════════════════════════════════════════════════════════╝
+## Waiting Status
+
+Waiting for: {description}
+Since: {date} ({n} days)
+Session: {name}
+Impact: Blocks {n} dependent sessions
+
+Options:
+1. resolved   - Dependency is now available
+2. waiting    - Still waiting, show alternatives
+3. workaround - Proceed without it
+4. abandon    - Give up on this path
 ```
 
 ## Exiting Waiting Mode

@@ -192,34 +192,28 @@ WARNINGS:
 ## Output Format
 
 ```
-╔══════════════════════════════════════════════════════════════╗
-║                    VALIDATION REPORT                         ║
-╠══════════════════════════════════════════════════════════════╣
-║  Status: {VALID | WARNINGS | ERRORS}                         ║
-╠══════════════════════════════════════════════════════════════╣
+## Validation Report
+
+Status: {VALID | WARNINGS | ERRORS}
 
 ERRORS (must fix):
-  ✗ {error_code}: {description}
-  ✗ {error_code}: {description}
+- [ERR] {error_code}: {description}
 
 WARNINGS (should fix):
-  ⚠ {warning_code}: {description}
-  ⚠ {warning_code}: {description}
+- [WARN] {warning_code}: {description}
 
 PASSED:
-  ✓ State file integrity
-  ✓ Active session consistency
-  ✓ Plan structure
-  ✓ Dependencies valid
-  ✓ Reports complete
-  ✓ Brief-report sync
-  ✓ Memory files present
-  ✓ No orphans
-  ✓ Progress tracking accurate
+- [OK] State file integrity
+- [OK] Active session consistency
+- [OK] Plan structure
+- [OK] Dependencies valid
+- [OK] Reports complete
+- [OK] Brief-report sync
+- [OK] Memory files present
+- [OK] No orphans
+- [OK] Progress tracking accurate
 
-╠══════════════════════════════════════════════════════════════╣
-║  {n} errors, {m} warnings                                    ║
-╚══════════════════════════════════════════════════════════════╝
+Summary: {n} errors, {m} warnings
 ```
 
 ## Auto-Fix Option

@@ -30,38 +30,14 @@ Self-orchestrating AI workflow system built on Claude Code.
 
 ```
 .ctx/
-├── state.md              # Current state (read this first)
-├── plan.md               # Active work plan
-├── scratchpad.md         # Cross-session notes
-├── modes/                # Instructions per mode/command
-│   ├── plan.md           # Planning mode
-│   ├── execute.md        # Execution mode
-│   ├── reflect.md        # Reflection mode
-│   ├── recover.md        # Error recovery
-│   ├── waiting.md        # External dependency wait
-│   ├── next.md           # Session selection logic
-│   ├── status.md         # Status display format
-│   ├── validate.md       # Consistency checks
-│   └── archive.md        # History management
-├── templates/            # Session brief templates
-│   ├── feature.md        # New functionality
-│   ├── bugfix.md         # Bug fixes
-│   ├── refactor.md       # Code improvements
-│   └── research.md       # Investigation
-├── sessions/             # Active work (grouped by phase)
-│   └── {phase}/
-│       ├── _overview.md  # Phase goals
-│       └── {session}/
-│           ├── brief.md  # Input (what to do)
-│           └── report.md # Output (what was done)
-├── memory/               # Persistent context
-│   ├── project.md        # Layer 0 - always loaded
-│   └── modules/          # Layer 1 - load as needed
-└── history/              # Archived completed work
-    └── {date}_{plan}/
-        ├── _final.md     # Plan completion summary
-        └── {phase}/
-            └── _summary.md
+  state.md          # Current state (read first)
+  plan.md           # Active work plan
+  scratchpad.md     # Cross-session notes
+  modes/            # Mode instructions (plan, execute, reflect, recover, etc.)
+  templates/        # Session brief templates (feature, bugfix, refactor, research)
+  sessions/{phase}/{session}/  # Active work: brief.md + report.md
+  memory/           # project.md + modules/
+  history/          # Archived completed work
 ```
 
 ## Core Principles
@@ -75,36 +51,8 @@ Self-orchestrating AI workflow system built on Claude Code.
 ## Workflow Cycle
 
 ```
-       ┌─────────┐
-       │  plan   │ ← Create work breakdown
-       └────┬────┘
-            │
-            ▼
-       ┌─────────┐
-  ┌───>│  next   │ ← Select next session
-  │    └────┬────┘
-  │         │
-  │         ▼
-  │    ┌─────────┐
-  │    │ execute │ ← Do the work
-  │    └────┬────┘
-  │         │
-  │    ┌────┴────┐
-  │    │         │
-  │    ▼         ▼
-  │ success   blocked
-  │    │         │
-  │    │         ▼
-  │    │    ┌─────────┐
-  │    │    │ recover │ ← Fix issues
-  │    │    └────┬────┘
-  │    │         │
-  │    ▼         │
-  │ ┌─────────┐  │
-  │ │ reflect │◄─┘ ← Consolidate learning
-  │ └────┬────┘
-  │      │
-  └──────┘ (more sessions)
+plan -> next -> execute -> success -> reflect -> next (loop)
+                       \-> blocked -> recover -> reflect
 ```
 
 ## Automatic Transitions

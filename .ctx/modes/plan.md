@@ -208,8 +208,8 @@ Sessions:
 
 Simple text representation:
 ```
-phase-1/session-1 ──┬──> phase-1/session-2
-                    └──> phase-1/session-3 ──> phase-2/session-1
+session-1 -> session-2, session-3
+session-3 -> phase-2/session-1
 ```
 
 ## Open Questions
