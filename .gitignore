@@ -1,0 +1,22 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# Keep session and history directories but ignore contents
+# (they contain project-specific work)
+.ctx/sessions/*
+!.ctx/sessions/.gitkeep
+.ctx/history/*
+!.ctx/history/.gitkeep
+
+# Keep modules directory but ignore contents
+# (they contain project-specific context)
+.ctx/memory/modules/*
+!.ctx/memory/modules/.gitkeep
