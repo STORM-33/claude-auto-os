@@ -36,7 +36,7 @@ Self-orchestrating AI workflow system built on Claude Code.
   modes/            # Mode instructions (plan, execute, reflect, recover, etc.)
   templates/        # Session brief templates (feature, bugfix, refactor, research)
   sessions/{phase}/{session}/  # Active work: brief.md + report.md
-  memory/           # project.md + modules/
+  memory/           # project.md + file-tree.md + modules/
   history/          # Archived completed work
 ```
 
@@ -45,8 +45,16 @@ Self-orchestrating AI workflow system built on Claude Code.
 1. **State is truth** - Always read state.md first, always update it after actions
 2. **Minimal context** - Load only what's needed for current task
 3. **Document decisions** - Session reports capture reasoning, not just outcomes
-4. **Update memory** - Reflect mode keeps project.md current
+4. **Update memory** - Reflect mode keeps project.md and file-tree.md current
 5. **Recover gracefully** - Use recover mode when blocked, never leave undefined state
+
+## Memory Files
+
+| File | Purpose | Updated |
+|------|---------|---------|
+| `project.md` | Project purpose, architecture, conventions | During reflect |
+| `file-tree.md` | Directory structure by module | During reflect (when structure changes) |
+| `modules/*.md` | Per-module context | As needed |
 
 ## Workflow Cycle
 

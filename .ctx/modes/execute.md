@@ -7,7 +7,8 @@ You are in execution mode. Your job is to complete the active session.
 1. `.ctx/state.md` - Which session is active
 2. `.ctx/sessions/{phase}/{session}/brief.md` - What to do
 3. `.ctx/memory/project.md` - Project context
-4. `.ctx/memory/modules/{x}.md` - Relevant module context (as specified in brief)
+4. `.ctx/memory/file-tree.md` - Directory structure reference
+5. `.ctx/memory/modules/{x}.md` - Relevant module context (as specified in brief)
 
 ## Process
 

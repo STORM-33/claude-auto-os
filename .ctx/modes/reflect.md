@@ -22,9 +22,10 @@ You are in reflect mode. Your job is to consolidate learning and update project 
 1. **Review recent work** - Read session reports since last reflect
 2. **Process scratchpad** - Categorize notes, resolve what's possible
 3. **Update project.md** - Revise structure, architecture, patterns
-4. **Update module summaries** - Add/revise based on new understanding
-5. **Clean scratchpad** - Remove processed items, keep open questions
-6. **Archive if needed** - Move completed phases to history
+4. **Update file-tree.md** - Scan for structural changes, update directory listing
+5. **Update module summaries** - Add/revise based on new understanding
+6. **Clean scratchpad** - Remove processed items, keep open questions
+7. **Archive if needed** - Move completed phases to history
 
 ## Memory Guidelines
 
@@ -47,10 +48,23 @@ You are in reflect mode. Your job is to consolidate learning and update project 
 - Focus on "why" not "what"
 - Summaries, not documentation
 
+**file-tree.md should contain:**
+- High-level directory structure grouped by module
+- File counts per directory (e.g., "16 controllers")
+- Brief purpose annotations for key files
+- Updated date stamp
+
+**File tree guidelines:**
+- Keep scannable - summarize large directories
+- Group by feature/module, not alphabetically
+- Only list significant files, not every file
+- Update when structure changes, not every reflect
+
 ## Output
 
 Update these files:
 - `.ctx/memory/project.md` - Revised understanding
+- `.ctx/memory/file-tree.md` - Updated directory structure
 - `.ctx/memory/modules/*.md` - New or updated summaries
 - `.ctx/scratchpad.md` - Cleaned up
 - `.ctx/state.md` - Update last action
@@ -91,6 +105,7 @@ Before marking reflect complete:
 - [ ] Session reports reviewed
 - [ ] Scratchpad processed (items moved or deleted)
 - [ ] project.md updated if needed
+- [ ] file-tree.md updated if structure changed
 - [ ] Module summaries updated if needed
 - [ ] Completed phases archived to history/
 - [ ] State.md progress tracking updated
